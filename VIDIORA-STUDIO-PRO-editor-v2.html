@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080d19">
+<title>VIDIORA STUDIO PRO — Creator Editor</title>
+<style>
+:root{--bg:#080d19;--panel:#111b2d;--panel2:#182640;--line:#2b3d59;--txt:#f1f5ff;--muted:#9aabc3;--blue:#4caeff;--violet:#8567ff;--green:#45d2a2;--red:#ff7388}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.45 system-ui,Arial,sans-serif}button,input,select,textarea{font:inherit}button{background:#1b2a44;color:var(--txt);border:1px solid var(--line);padding:9px 12px;border-radius:9px;cursor:pointer}button:active{transform:scale(.98)}button.primary{border:0;background:linear-gradient(110deg,#168dff,#7859f5);font-weight:750}button:disabled{opacity:.45}input,select,textarea{background:#0b1424;color:var(--txt);border:1px solid #354a69;border-radius:8px;padding:9px;width:100%}
+.top{position:sticky;top:0;z-index:10;background:#0b1423;border-bottom:1px solid var(--line);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}.brand{font-weight:950;letter-spacing:.8px}.brand b{color:#64bcff}.top-actions{display:flex;gap:6px;align-items:center}.status{font-size:10px;color:#83e3c2;border:1px solid #286e5b;border-radius:20px;padding:4px 7px}
+.layout{max-width:1500px;margin:auto;padding:12px;display:grid;grid-template-columns:250px minmax(300px,1fr) 260px;gap:12px}.panel{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}.head{padding:11px 13px;border-bottom:1px solid var(--line);font-weight:800;display:flex;justify-content:space-between;align-items:center}.muted{color:var(--muted);font-size:11px}.pad{padding:12px}.stack{display:grid;gap:10px}.row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.row button{flex:0 0 auto}.drop{border:1px dashed #55749d;border-radius:10px;padding:18px 8px;text-align:center;color:var(--muted);background:#0c1729}.drop.over{border-color:var(--green);background:#103329}
+.library{display:grid;gap:7px;max-height:380px;overflow:auto;margin-top:10px}.asset{display:flex;gap:8px;align-items:center;padding:8px;background:#17253c;border:1px solid #2a3e5b;border-radius:8px;cursor:pointer}.asset.active{border-color:var(--blue)}.thumb{width:43px;height:34px;border-radius:5px;background:#263b5b;display:grid;place-items:center;overflow:hidden;flex:none}.thumb img{width:100%;height:100%;object-fit:cover}.asset strong{display:block;font-size:11px;max-width:145px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.asset small{color:var(--muted);font-size:10px}
+.center{display:grid;grid-template-rows:minmax(300px,1fr) auto;gap:12px;min-width:0}.monitor{display:flex;flex-direction:column;min-height:370px}.stage{flex:1;min-height:270px;background:#03060b;display:grid;place-items:center;position:relative;overflow:hidden;padding:8px}.stage-inner{position:relative;max-width:100%;max-height:100%;aspect-ratio:16/9;width:min(100%,800px);background:#000;display:grid;place-items:center;overflow:hidden}.stage-inner video,.stage-inner img{width:100%;height:100%;object-fit:contain}.stage-inner video{filter:none}.overlay-text{position:absolute;left:5%;right:5%;top:42%;text-align:center;font-weight:850;font-size:clamp(20px,4vw,48px);color:#fff;text-shadow:0 2px 8px #000;white-space:pre-wrap;pointer-events:none}.monitor-controls{display:flex;gap:7px;align-items:center;justify-content:center;padding:9px;border-top:1px solid var(--line);flex-wrap:wrap}.timeline .head{flex-wrap:wrap;gap:8px}.ruler{padding:5px 12px;color:#8195b2;font-size:10px;background:#0c1627}.tracks{padding:10px;display:grid;gap:8px;overflow-x:auto}.track{display:flex;gap:6px;align-items:stretch;min-width:450px}.trackname{width:68px;flex:none;font-size:10px;color:#a8bad3;padding:8px 2px}.lane{display:flex;align-items:center;gap:5px;min-height:48px;flex:1;padding:4px;border:1px dashed #344a68;border-radius:8px;overflow-x:auto}.lane.over{background:#10332c;border-color:var(--green)}.clip{min-width:90px;max-width:180px;flex:1;border:1px solid #6aa9ec;border-radius:7px;background:linear-gradient(120deg,#176cae,#5745a9);padding:7px;color:#fff;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:grab}.clip.text{background:linear-gradient(120deg,#934bb7,#bd527d)}.clip.audio{background:linear-gradient(120deg,#137c76,#267b9e)}.clip.sel{outline:2px solid white;outline-offset:1px}.inspector{display:grid;gap:11px}.field{display:grid;gap:4px}.field label{font-size:11px;color:var(--muted)}.hint{font-size:11px;color:var(--muted);background:#0c1728;padding:9px;border-radius:8px}.range{padding:0}.empty{color:var(--muted);font-size:12px;padding:12px;background:#0b1424;border-radius:8px}.footer{text-align:center;color:#71829b;font-size:10px;padding:5px 10px 20px}
+@media(max-width:950px){.layout{grid-template-columns:1fr 1fr}.center{grid-column:1/-1;grid-row:1}.left{grid-column:1}.right{grid-column:2}}
+@media(max-width:620px){.layout{display:flex;flex-direction:column;padding:8px}.center{order:1}.left{order:2}.right{order:3}.monitor{min-height:320px}.stage{min-height:230px}.top{padding:9px}.brand{font-size:14px}.status{display:none}.library{max-height:220px}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="brand"><b>VIDIORA</b> STUDIO PRO</div>
+ <div class="top-actions"><span class="status" id="saveStatus">LOCAL PROJECT</span><button id="newProject">New</button><button id="saveProject" class="primary">Save</button></div>
+</header>
+<main class="layout">
+ <section class="panel left">
+  <div class="head">Media Library <span class="muted" id="assetCount">0 assets</span></div>
+  <div class="pad">
+   <div class="row"><button class="primary" id="import">＋ Import media</button><button id="addTitle">＋ Text</button></div>
+   <input id="files" type="file" accept="video/*,image/*,audio/*" multiple hidden>
+   <div class="drop" id="drop"><b>Drop media files here</b><br><span class="muted">Video · Image · Audio</span></div>
+   <div class="library" id="library"><div class="empty">Import media to begin.</div></div>
+  </div>
+  <div class="pad hint">Tip: drag an asset into the matching timeline track. Tap a clip to edit its settings.</div>
+ </section>
+ <section class="center">
+  <div class="panel monitor">
+   <div class="head">Preview Monitor <span class="muted" id="monitorName">No selection</span></div>
+   <div class="stage"><div class="stage-inner" id="stage"><div class="empty">Import a video or image, then add it to the timeline.</div></div></div>
+   <div class="monitor-controls">
+    <button id="play">▶ Play</button><button id="pause">Ⅱ Pause</button><button id="stop">■ Stop</button>
+    <span class="muted" id="clock">00:00</span>
+    <select id="ratio" style="width:auto"><option value="16/9">16:9 Landscape</option><option value="9/16">9:16 Portrait</option><option value="1/1">1:1 Square</option><option value="4/5">4:5 Social</option></select>
+   </div>
+  </div>
+  <div class="panel timeline">
+   <div class="head"><span>Multi-track Timeline</span><div class="row" style="flex:0 0 auto"><button id="split">✂ Split</button><button id="remove">Delete</button></div></div>
+   <div class="ruler">00:00 ───── 00:05 ───── 00:10 ───── 00:15 ───── 00:20 ───── 00:25</div>
+   <div class="tracks">
+    <div class="track"><div class="trackname">VIDEO</div><div class="lane" id="videoLane" data-track="video"><span class="muted">Drop video/image clips</span></div></div>
+    <div class="track"><div class="trackname">TEXT / FX</div><div class="lane" id="overlayLane" data-track="overlay"><span class="muted">Drop text and overlays</span></div></div>
+    <div class="track"><div class="trackname">AUDIO</div><div class="lane" id="audioLane" data-track="audio"><span class="muted">Drop audio clips</span></div></div>
+   </div>
+  </div>
+ </section>
+ <section class="panel right">
+  <div class="head">Clip Inspector <span class="muted">Controls</span></div>
+  <div class="pad"><div class="inspector" id="inspector"><div class="empty">Select a timeline clip to adjust its properties.</div></div></div>
+  <div class="pad hint">This build edits locally in your browser. AI generation, speech transcription and final multi-track export require additional processing modules and will be developed as separate tested stages.</div>
+ </section>
+</main>
+<div class="footer">VIDIORA STUDIO PRO · Mobile-first editing foundation</div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),dbName='vidiora-editor-v2',store='projects';
+let assets=[],selected=null,activeMedia=null,player=null,db=null,dragId=null;
+const id=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
+const type=f=>f.type.startsWith('video/')?'video':f.type.startsWith('image/')?'image':f.type.startsWith('audio/')?'audio':'other';
+function openDB(){return new Promise((resolve,reject)=>{if(!('indexedDB'in window)){resolve(null);return}const r=indexedDB.open(dbName,1);r.onupgradeneeded=()=>r.result.createObjectStore(store);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
+function saveDB(){return new Promise((resolve,reject)=>{if(!db){resolve(false);return}const tx=db.transaction(store,'readwrite');tx.objectStore(store).put(assets.map(a=>({id:a.id,name:a.name,type:a.type,track:a.track,blob:a.blob,trimIn:a.trimIn,trimOut:a.trimOut,speed:a.speed,volume:a.volume,filter:a.filter,text:a.text,color:a.color,fontSize:a.fontSize})), 'current');tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error)})}
+function loadDB(){return new Promise((resolve,reject)=>{if(!db){resolve([]);return}const r=db.transaction(store).objectStore(store).get('current');r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error)})}
+function fmt(n){n=Math.max(0,Math.floor(n||0));return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')}
+function get(id){return assets.find(a=>a.id===id)}
+function stop(){if(player&&player.tagName==='VIDEO'){player.pause()} }
+function addFiles(files){for(const f of files){const t=type(f);if(!['video','image','audio'].includes(t))continue;assets.push({id:id(),name:f.name,type:t,blob:f,track:t==='audio'?'audio':'video',trimIn:0,trimOut:0,speed:1,volume:1,filter:'none',text:'Your title here',color:'#ffffff',fontSize:42})}render();$('saveStatus').textContent='UNSAVED CHANGES'}
+function render(){ $('assetCount').textContent=assets.length+' assets';const lib=$('library');lib.innerHTML='';if(!assets.length){lib.innerHTML='<div class="empty">Import media to begin.</div>';return}
+ assets.forEach(a=>{a.url ||= URL.createObjectURL(a.blob);const el=document.createElement('div');el.className='asset'+(activeMedia===a.id?' active':'');el.draggable=true;const th=document.createElement('div');th.className='thumb';th.textContent=a.type==='video'?'▶':a.type==='image'?'▧':'♫';if(a.type==='image'){const im=document.createElement('img');im.src=a.url;th.textContent='';th.append(im)}const m=document.createElement('div');const s=document.createElement('strong');s.textContent=a.name;const sm=document.createElement('small');sm.textContent=a.type.toUpperCase();m.append(s,sm);el.append(th,m);el.onclick=()=>{activeMedia=a.id;previewAsset(a);render()};el.ondragstart=e=>e.dataTransfer.setData('text/plain',a.id);lib.append(el)});
+ renderLanes()}
+function renderLanes(){[['video','videoLane'],['overlay','overlayLane'],['audio','audioLane']].forEach(([t,lid])=>{const lane=$(lid);lane.innerHTML='';const arr=assets.filter(a=>a.track===t);if(!arr.length){const s=document.createElement('span');s.className='muted';s.textContent=t==='video'?'Drop video/image clips':t==='overlay'?'Drop text and overlays':'Drop audio clips';lane.append(s)}arr.forEach(a=>{const c=document.createElement('div');c.className='clip'+(a.type==='text'?' text':'')+(a.type==='audio'?' audio':'')+(selected===a.id?' sel':'');c.textContent=a.name;c.draggable=true;c.onclick=()=>select(a.id);c.ondragstart=e=>e.dataTransfer.setData('text/plain',a.id);lane.append(c)})})}
+['videoLane','overlayLane','audioLane'].forEach(lid=>{const lane=$(lid);lane.ondragover=e=>{e.preventDefault();lane.classList.add('over')};lane.ondragleave=()=>lane.classList.remove('over');lane.ondrop=e=>{e.preventDefault();lane.classList.remove('over');const a=get(e.dataTransfer.getData('text/plain'));if(!a)return;const t=lane.dataset.track;if((t==='audio')!==(a.type==='audio'))return;if(t==='video'&&a.type==='text')return;a.track=t;renderLanes();select(a.id)}});
+function previewAsset(a){stop();const stage=$('stage');stage.innerHTML='';const wrap=document.createElement('div');wrap.className='overlay-text';if(a.type==='video'){const v=document.createElement('video');v.src=a.url;v.controls=false;v.playsInline=true;v.preload='metadata';v.style.filter=a.filter||'none';v.volume=a.volume??1;v.playbackRate=a.speed||1;v.onloadedmetadata=()=>{if(!a.trimOut)a.trimOut=v.duration};v.ontimeupdate=()=>{if(a.trimOut&&v.currentTime>=a.trimOut){v.pause();v.currentTime=a.trimOut}};stage.append(v);player=v}else if(a.type==='image'){const im=document.createElement('img');im.src=a.url;im.style.filter=a.filter||'none';stage.append(im);player=im}else if(a.type==='text'){wrap.textContent=a.text;wrap.style.color=a.color;wrap.style.fontSize=a.fontSize+'px';stage.append(wrap);player=null}else{stage.innerHTML='<div class="empty">Audio asset selected. Add it to the audio track.</div>';player=null}
+ if(a.type!=='text'&&a.type!=='audio'){const overlay=assets.find(x=>x.type==='text'&&x.track==='overlay');if(overlay){wrap.textContent=overlay.text;wrap.style.color=overlay.color;wrap.style.fontSize=overlay.fontSize+'px';stage.append(wrap)}}
+ $('monitorName').textContent=a.name}
+function select(aid){selected=aid;const a=get(aid);if(!a)return;activeMedia=aid;renderLanes();previewAsset(a);inspector(a)}
+function field(label,control){const d=document.createElement('div');d.className='field';const l=document.createElement('label');l.textContent=label;d.append(l,control);$('inspector').append(d);return control}
+function inspector(a){const box=$('inspector');box.innerHTML='';const name=document.createElement('input');name.value=a.name;field('Clip name',name);name.onchange=()=>{a.name=name.value;render()};
+ if(a.type==='video'){const ti=document.createElement('input');ti.type='number';ti.min=0;ti.step='.1';ti.value=a.trimIn;field('Trim in (seconds)',ti);ti.onchange=()=>a.trimIn=Math.max(0,+ti.value||0);const to=document.createElement('input');to.type='number';to.min=0;to.step='.1';to.value=a.trimOut;field('Trim out (seconds; 0 = full length)',to);to.onchange=()=>a.trimOut=Math.max(0,+to.value||0)}
+ if(a.type==='video'||a.type==='audio'){const sp=document.createElement('select');[['0.5','0.5×'],['0.75','0.75×'],['1','1×'],['1.25','1.25×'],['1.5','1.5×'],['2','2×']].forEach(([v,t])=>{const o=document.createElement('option');o.value=v;o.textContent=t;sp.append(o)});sp.value=a.speed||1;field('Playback speed',sp);sp.onchange=()=>{a.speed=+sp.value;if(player?.tagName==='VIDEO')player.playbackRate=a.speed};const vol=document.createElement('input');vol.type='range';vol.min=0;vol.max=1;vol.step='.05';vol.value=a.volume??1;field('Volume',vol);vol.oninput=()=>{a.volume=+vol.value;if(player?.tagName==='VIDEO')player.volume=a.volume}}
+ if(a.type==='video'||a.type==='image'){const fl=document.createElement('select');[['none','Original'],['grayscale(1)','Black & white'],['sepia(1)','Sepia'],['contrast(1.25) saturate(1.2)','Cinematic contrast'],['brightness(1.2)','Bright'],['saturate(1.6)','Vibrant']].forEach(([v,t])=>{const o=document.createElement('option');o.value=v;o.textContent=t;fl.append(o)});fl.value=a.filter||'none';field('Visual filter',fl);fl.onchange=()=>{a.filter=fl.value;if(player?.style)player.style.filter=a.filter}}
+ if(a.type==='text'){const tx=document.createElement('textarea');tx.value=a.text;field('Text content',tx);tx.oninput=()=>{a.text=tx.value;if(player?.classList?.contains('overlay-text'))player.textContent=a.text};const co=document.createElement('input');co.type='color';co.value=a.color;field('Text colour',co);co.oninput=()=>{a.color=co.value;if(player?.style)player.style.color=a.color};const fs=document.createElement('input');fs.type='range';fs.min=16;fs.max=96;fs.value=a.fontSize;field('Text size',fs);fs.oninput=()=>{a.fontSize=+fs.value;if(player?.style)player.style.fontSize=a.fontSize+'px'}}
+ const b=document.createElement('button');b.textContent='Apply & save project';b.className='primary';b.onclick=async()=>{await saveDB();$('saveStatus').textContent='SAVED IN THIS BROWSER'};box.append(b);const note=document.createElement('div');note.className='hint';note.textContent='Changes apply to the selected source preview. Timeline sequencing and rendered export are the next engine milestone.';box.append(note)}
+$('import').onclick=()=>$('files').click();$('files').onchange=e=>addFiles(e.target.files);$('addTitle').onclick=()=>{const a={id:id(),name:'Title '+(assets.filter(x=>x.type==='text').length+1),type:'text',track:'overlay',text:'Your title here',color:'#ffffff',fontSize:42,trimIn:0,trimOut:5};assets.push(a);render();select(a.id)};
+const drop=$('drop');drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};drop.ondragleave=()=>drop.classList.remove('over');drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');addFiles(e.dataTransfer.files)};
+$('play').onclick=()=>{if(player?.tagName==='VIDEO'){const a=get(selected);if(a?.trimIn&&player.currentTime<a.trimIn)player.currentTime=a.trimIn;player.play().catch(()=>{})}};$('pause').onclick=()=>{if(player?.tagName==='VIDEO')player.pause()};$('stop').onclick=()=>{if(player?.tagName==='VIDEO'){player.pause();player.currentTime=get(selected)?.trimIn||0}};
+$('ratio').onchange=()=>{$('stage').style.aspectRatio=$('ratio').value};
+$('remove').onclick=()=>{if(!selected)return;const i=assets.findIndex(a=>a.id===selected);if(i>=0){if(assets[i].url)URL.revokeObjectURL(assets[i].url);assets.splice(i,1)}selected=null;$('stage').innerHTML='<div class="empty">Select a clip to preview.</div>';$('inspector').innerHTML='<div class="empty">Select a timeline clip to edit its properties.</div>';$('monitorName').textContent='No selection';render()};
+$('split').onclick=()=>{const a=get(selected);if(!a||a.type!=='video'||player?.tagName!=='VIDEO'){alert('Select a video clip and position its preview playhead first.');return}const cut=player.currentTime;if(cut<=(a.trimIn||0)+.15||a.trimOut&&cut>=a.trimOut-.15){alert('Move the playhead inside the selected clip.');return}const second={...a,id:id(),name:a.name+' — Part 2',trimIn:cut};a.trimOut=cut;assets.splice(assets.indexOf(a)+1,0,second);render();select(second.id)};
+$('saveProject').onclick=async()=>{try{await saveDB();$('saveStatus').textContent='SAVED ON THIS DEVICE';alert('Project and imported media saved in this browser on this device. Keep using the same browser and device to reopen it.')}catch(e){alert('Browser storage could not save the project. Try fewer or smaller media files.')}};
+$('newProject').onclick=()=>{if(!confirm('Start a new project? Save your current project first.'))return;assets.forEach(a=>a.url&&URL.revokeObjectURL(a.url));assets=[];selected=null;activeMedia=null;render();$('stage').innerHTML='<div class="empty">Import a video or image, then add it to the timeline.</div>';$('inspector').innerHTML='<div class="empty">Select a timeline clip to adjust its properties.</div>'};
+(async()=>{try{db=await openDB();const saved=await loadDB();assets=saved.map(a=>({...a,url:a.blob?URL.createObjectURL(a.blob):null}));render();if(assets.length)$('saveStatus').textContent='RESTORED PROJECT'}catch(e){$('saveStatus').textContent='LOCAL MODE'}})();
+})();
+</script>
+</body>
+</html>
