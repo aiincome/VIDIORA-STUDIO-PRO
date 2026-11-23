@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080d19">
+<title>VIDIORA STUDIO PRO — V3.4 Creator Studio</title>
+<style>
+:root{--bg:#080d19;--panel:#111b2d;--panel2:#182640;--line:#2b3d59;--txt:#f1f5ff;--muted:#9aabc3;--blue:#4caeff;--violet:#8567ff;--green:#45d2a2}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.45 system-ui,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{background:#1b2a44;color:var(--txt);border:1px solid var(--line);padding:9px 11px;border-radius:9px;cursor:pointer}button.primary{border:0;background:linear-gradient(110deg,#168dff,#7859f5);font-weight:750}button:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{background:#0b1424;color:var(--txt);border:1px solid #354a69;border-radius:8px;padding:9px;width:100%}input[type=color]{height:40px;padding:3px}input[type=range]{padding:0}
+.top{position:sticky;top:0;z-index:20;background:#0b1423;border-bottom:1px solid var(--line);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.brand{font-weight:950;letter-spacing:.8px}.brand b{color:#64bcff}.top-actions,.row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.layout{max-width:1500px;margin:auto;padding:12px;display:grid;grid-template-columns:245px minmax(300px,1fr) 280px;gap:12px}.panel{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}.head{padding:11px 13px;border-bottom:1px solid var(--line);font-weight:800;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.muted,.hint{color:var(--muted);font-size:11px}.pad{padding:12px}.stack{display:grid;gap:10px}.field{display:grid;gap:4px}.field label{font-size:11px;color:var(--muted)}.hint{background:#0c1728;padding:9px;border-radius:8px}.drop{border:1px dashed #55749d;border-radius:10px;padding:18px 8px;text-align:center;color:var(--muted);background:#0c1729;margin-top:10px}
+.library{display:grid;gap:7px;max-height:300px;overflow:auto;margin-top:10px}.asset{display:flex;gap:8px;align-items:center;padding:8px;background:#17253c;border:1px solid #2a3e5b;border-radius:8px;cursor:pointer}.asset.active{border-color:var(--blue)}.thumb{width:38px;height:32px;border-radius:5px;background:#263b5b;display:grid;place-items:center;flex:none}.asset strong{display:block;font-size:11px;max-width:145px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.center{display:grid;grid-template-rows:minmax(300px,1fr) auto;gap:12px;min-width:0}.monitor{display:flex;flex-direction:column;min-height:360px}.stage-wrap{flex:1;min-height:260px;background:#03060b;display:grid;place-items:center;padding:8px;overflow:hidden}.stage{position:relative;width:min(100%,850px);aspect-ratio:16/9;background:#000;overflow:hidden;touch-action:none;isolation:isolate}
+.stage video,.stage>.base-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0}.stage .subject-cutout{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none}
+.text-layer{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:92%;min-width:30px;color:white;font-weight:800;text-align:center;white-space:pre-wrap;overflow-wrap:anywhere;text-shadow:0 2px 8px #000;z-index:4;touch-action:none;cursor:move;user-select:none;-webkit-user-select:none;padding:3px 6px}
+.text-layer.background{z-index:1;opacity:.45}.text-layer.behind{z-index:2}.text-layer.running{white-space:nowrap;max-width:none;left:100%;top:auto;bottom:8%;transform:none;animation:runtext 12s linear infinite}.text-layer.selected{outline:2px dashed #69bdff;outline-offset:4px}
+.monitor-controls{display:flex;gap:7px;align-items:center;justify-content:center;padding:9px;border-top:1px solid var(--line);flex-wrap:wrap}.seek-row{display:grid;grid-template-columns:auto minmax(80px,1fr) auto;gap:9px;align-items:center;padding:0 12px 10px}.seek-row input{min-width:0}
+.timeline .head{flex-wrap:wrap}.ruler{padding:5px 12px;color:#8195b2;font-size:10px;background:#0c1627}.tracks{padding:10px;display:grid;gap:8px;overflow-x:auto}.track{display:flex;gap:6px;align-items:stretch;min-width:430px}.trackname{width:78px;flex:none;font-size:10px;color:#a8bad3;padding:8px 2px}.lane{display:flex;align-items:stretch;gap:5px;min-height:54px;flex:1;padding:4px;border:1px dashed #344a68;border-radius:8px;overflow-x:auto;position:relative}.lane.linear{background-image:repeating-linear-gradient(90deg,transparent 0,transparent 79px,rgba(125,155,195,.10) 80px)}.timeline-clip{position:relative;flex:0 0 auto;min-width:74px;max-width:none;height:44px;border:1px solid #6aa9ec;border-radius:6px;background:linear-gradient(120deg,#176cae,#5745a9);padding:5px 7px;color:#fff;font-size:10px;text-align:left;overflow:hidden;cursor:grab}.timeline-clip.text{background:linear-gradient(120deg,#934bb7,#bd527d)}.timeline-clip.audio{background:linear-gradient(120deg,#087f70,#16a58a)}.timeline-clip.sel{outline:2px solid #fff}.clip-duration{display:block;font-size:9px;opacity:.8}.timeline-tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.history-note{font-size:10px;color:var(--muted)}.clip{min-width:90px;max-width:180px;border:1px solid #6aa9ec;border-radius:7px;background:linear-gradient(120deg,#176cae,#5745a9);padding:7px;color:#fff;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}.clip.text{background:linear-gradient(120deg,#934bb7,#bd527d)}.clip.sel{outline:2px solid white}
+.inspector{display:grid;gap:10px}.footer{text-align:center;color:#71829b;font-size:10px;padding:5px 10px 20px}
+@keyframes runtext{from{left:100%}to{left:-120%}}
+@keyframes textFade{from{opacity:0}to{opacity:1}}
+@keyframes textSlide{from{transform:translate(-50%,30%);opacity:0}to{transform:translate(-50%,-50%);opacity:1}}
+@keyframes textZoom{from{transform:translate(-50%,-50%) scale(.2);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+@keyframes textBounce{0%,100%{transform:translate(-50%,-50%)}30%{transform:translate(-50%,-68%)}55%{transform:translate(-50%,-45%)}75%{transform:translate(-50%,-54%)}}
+@keyframes textType{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.text-layer.anim-fade{animation:textFade .7s ease both}
+.text-layer.anim-slide{animation:textSlide .7s ease both}
+.text-layer.anim-zoom{animation:textZoom .55s ease both}
+.text-layer.anim-bounce{animation:textBounce .8s ease both}
+.text-layer.anim-type{display:inline-block;white-space:pre;animation:textType 2s steps(24,end) both}
+.audio-preview{width:100%;accent-color:#4caeff}progress{height:12px;accent-color:#4caeff}#renderVideo{background:linear-gradient(110deg,#087f70,#168dff)}
+
+@media(max-width:950px){.layout{grid-template-columns:1fr 1fr}.center{grid-column:1/-1;grid-row:1}.left{grid-column:1}.right{grid-column:2}}
+@media(max-width:620px){.layout{display:flex;flex-direction:column;padding:8px}.center{order:1}.left{order:2}.right{order:3}.monitor{min-height:320px}.stage-wrap{min-height:230px}.top{padding:9px;display:grid;grid-template-columns:minmax(0,1fr) auto}.brand{font-size:13px;white-space:nowrap}.top-actions{justify-content:flex-end;gap:5px}.top-actions button{padding:8px}.top-actions .muted{display:none}.library{max-height:220px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><b>VIDIORA</b> STUDIO PRO <span class="muted">V3.4</span></div>
+  <div class="top-actions"><span class="muted" id="saveStatus">LOCAL PROJECT</span><button id="undo" disabled title="Undo (Ctrl+Z)">↶ Undo</button><button id="redo" disabled title="Redo (Ctrl+Shift+Z)">↷ Redo</button><button id="renderVideo" class="primary">Export video</button><button id="exportProject">Backup</button><button id="importProject">Restore</button><input id="projectFile" type="file" accept=".vidiora,application/json" hidden><button id="newProject">New</button><button id="saveProject" class="primary">Save project</button></div>
+</header>
+<main class="layout">
+<section class="panel left">
+  <div class="head">Media Library <span class="muted" id="assetCount">0 assets</span></div>
+  <div class="pad">
+    <div class="row"><button class="primary" id="import">＋ Import media</button><button id="addText">＋ Add text</button></div>
+    <input id="files" type="file" accept="video/*,image/*,audio/*" multiple hidden>
+    <div class="drop" id="drop">Import video, image, audio or transparent PNG cutouts</div>
+    <div class="library" id="library"><div class="hint">Import media to begin.</div></div>
+  </div>
+  <div class="pad hint">Behind-subject text currently uses a transparent PNG cutout that you supply. Automatic AI subject separation is not included in this version.</div>
+</section>
+<section class="center">
+  <div class="panel monitor">
+    <div class="head">Preview Monitor <span class="muted" id="monitorName">No selection</span></div>
+    <div class="stage-wrap"><div class="stage" id="stage"><div class="hint">Import a video or image, then add text.</div></div></div>
+    <div class="monitor-controls">
+      <button id="play">▶ Play</button><button id="pause">Ⅱ Pause</button><button id="stop">■ Stop</button>
+      <select id="ratio" style="width:auto"><option value="16/9">16:9 Landscape</option><option value="9/16">9:16 Portrait</option><option value="1/1">1:1 Square</option><option value="4/5">4:5 Social</option></select>
+    </div>
+    <div class="seek-row"><span class="muted" id="clock">00:00</span><input id="seek" type="range" min="0" max="100" step=".01" value="0" aria-label="Video playhead"><span class="muted" id="durationLabel">00:00</span></div><div class="pad" id="exportPanel" hidden><div class="field"><label id="exportStatus">Preparing export…</label><progress id="exportProgress" max="100" value="0" style="width:100%"></progress></div></div>
+  </div>
+  <div class="panel timeline">
+    <div class="head">Multi-track Timeline <div class="row"><button id="split" title="Select a video clip to enable splitting" disabled>✂ Split</button><button id="delete">Delete selected</button></div></div>
+    <div class="ruler">Linear clip lanes, drag-to-reorder, Undo/Redo, text entrance animations, video preview speed and filters, audio preview, and project backup/restore. Export currently renders the selected source video with text overlays to WebM. Full multi-clip timeline rendering, transitions, audio-track mixing and MP4 export remain under development.</div>
+    <div class="tracks">
+      <div class="track"><div class="trackname">VIDEO</div><div class="lane" id="videoLane">Video / image clips</div></div>
+      <div class="track"><div class="trackname">TEXT LAYERS</div><div class="lane" id="textLane">Text overlays</div></div>
+      <div class="track"><div class="trackname">SUBJECT CUTOUT</div><div class="lane" id="cutoutLane">Transparent PNG cutouts</div></div>
+      <div class="track"><div class="trackname">AUDIO</div><div class="lane" id="audioLane">Audio clips</div></div>
+    </div>
+  </div>
+</section>
+<section class="panel right">
+  <div class="head">Text & Clip Inspector <span class="muted">Controls</span></div>
+  <div class="pad"><div class="inspector" id="inspector"><div class="hint">Select a text layer or media clip.</div></div></div>
+</section>
+</main>
+<div class="footer">VIDIORA STUDIO PRO · V3.4 · Creator Studio</div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id), DB_NAME='vidiora-editor-v32', STORE='projects';
+let assets=[],selected=null,player=null,db=null,drag=null,playhead=0,objectUrls=[],undoStack=[],redoStack=[],historyBusy=false;
+const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
+const get=id=>assets.find(a=>a.id===id);
+const mediaType=f=>f.type.startsWith('video/')?'video':f.type.startsWith('image/')?'image':f.type.startsWith('audio/')?'audio':'other';
+const fmt=n=>{n=Math.max(0,Math.floor(Number(n)||0));return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')};
+function markUnsaved(){ $('saveStatus').textContent='UNSAVED CHANGES'; }
+function snapshot(){return assets.map(a=>({...a}));}
+function pushHistory(){if(historyBusy)return;const now=snapshot();const previous=undoStack.length?undoStack[undoStack.length-1]:null;if(previous&&JSON.stringify(previous.map(a=>({id:a.id,name:a.name,text:a.text,mode:a.mode,x:a.x,y:a.y,trimIn:a.trimIn,trimOut:a.trimOut,speed:a.speed,filter:a.filter,volume:a.volume,fontSize:a.fontSize,color:a.color,animation:a.animation})))===JSON.stringify(now.map(a=>({id:a.id,name:a.name,text:a.text,mode:a.mode,x:a.x,y:a.y,trimIn:a.trimIn,trimOut:a.trimOut,speed:a.speed,filter:a.filter,volume:a.volume,fontSize:a.fontSize,color:a.color,animation:a.animation}))))return;undoStack.push(now);if(undoStack.length>40)undoStack.shift();redoStack=[];updateHistoryButtons();}
+function updateHistoryButtons(){$('undo').disabled=!undoStack.length;$('redo').disabled=!redoStack.length;}
+function restoreSnapshot(state){historyBusy=true;assets=state.map(a=>({...a}));selected=assets.some(a=>a.id===selected)?selected:null;playhead=0;render();if(selected)select(selected);else $('inspector').innerHTML='<div class="hint">Select a text layer or media clip.</div>';historyBusy=false;markUnsaved();updateHistoryButtons();}
+function undo(){if(!undoStack.length)return;redoStack.push(snapshot());const previous=undoStack.pop();restoreSnapshot(previous);}
+function redo(){if(!redoStack.length)return;undoStack.push(snapshot());const next=redoStack.pop();restoreSnapshot(next);}
+function durationOf(a){if(a.type==='text')return Math.max(1,Number(a.duration)||5);if(a.type==='image'||a.type==='audio')return Math.max(1,Number(a.duration)||5);return Math.max(1,(Number(a.trimOut)||Number(a.duration)||5)-(Number(a.trimIn)||0));}
+
+function openDB(){return new Promise((resolve,reject)=>{
+  if(!('indexedDB' in window)){resolve(null);return;}
+  const request=indexedDB.open(DB_NAME,1);
+  request.onupgradeneeded=()=>{if(!request.result.objectStoreNames.contains(STORE))request.result.createObjectStore(STORE);};
+  request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);
+});}
+function saveDB(){return new Promise((resolve,reject)=>{
+  if(!db){resolve(false);return;}
+  const tx=db.transaction(STORE,'readwrite');
+  const serial=assets.map(a=>{const copy={...a};delete copy.url;return copy;});
+  tx.objectStore(STORE).put(serial,'current');
+  tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Save aborted'));
+});}
+function loadDB(){return new Promise((resolve,reject)=>{
+  if(!db){resolve([]);return;}
+  const req=db.transaction(STORE,'readonly').objectStore(STORE).get('current');
+  req.onsuccess=()=>resolve(Array.isArray(req.result)?req.result:[]);req.onerror=()=>reject(req.error);
+});}
+function makeUrl(a){if(a.blob&&!a.url){a.url=URL.createObjectURL(a.blob);objectUrls.push(a.url);}return a.url;}
+function addFiles(fileList){
+  pushHistory();
+  for(const file of fileList){const type=mediaType(file);if(!['video','image','audio'].includes(type))continue;
+    const isPng=type==='image'&&file.type==='image/png';
+    assets.push({id:uid(),name:file.name,type,track:type==='audio'?'audio':isPng?'cutout':'video',blob:file,trimIn:0,trimOut:0,volume:1,speed:1,filter:'none'});
+  }
+  render();markUnsaved();
+}
+function addText(mode='front'){
+  pushHistory();
+  const number=assets.filter(a=>a.type==='text').length+1;
+  const item={id:uid(),name:'Text '+number,type:'text',track:'text',text:mode==='running'?'Your scrolling text':'Your title here',mode,color:'#ffffff',fontSize:42,x:50,y:50,duration:mode==='running'?12:5,fontFamily:'Arial',bold:true,italic:false,outline:false,shadow:true,animation:'none'};
+  assets.push(item);render();select(item.id);markUnsaved();
+}
+function activeVideo(){
+  const chosen=get(selected);
+  if(chosen&&chosen.type==='video')return chosen;
+  return assets.find(a=>a.type==='video')||null;
+}
+function render(){
+  $('assetCount').textContent=assets.length+' assets';
+  const lib=$('library');lib.replaceChildren();
+  assets.filter(a=>a.type!=='text').forEach(a=>{
+    const row=document.createElement('div');row.className='asset'+(selected===a.id?' active':'');
+    const thumb=document.createElement('div');thumb.className='thumb';thumb.textContent=a.type==='video'?'▶':a.type==='audio'?'♫':'▧';
+    const meta=document.createElement('div'),name=document.createElement('strong'),kind=document.createElement('small');
+    name.textContent=a.name;kind.textContent=(a.track||a.type).toUpperCase();meta.append(name,kind);row.append(thumb,meta);row.onclick=()=>select(a.id);lib.append(row);
+  });
+  if(!lib.children.length)lib.innerHTML='<div class="hint">No media imported yet.</div>';
+  renderLanes();renderStage();
+}
+function renderLanes(){
+  [['video','videoLane','Video / image clips'],['text','textLane','Text overlays'],['cutout','cutoutLane','Transparent PNG cutouts'],['audio','audioLane','Audio clips']].forEach(([track,id,empty])=>{
+    const lane=$(id);lane.replaceChildren();lane.classList.add('linear');const list=assets.filter(a=>a.track===track);
+    if(!list.length){lane.textContent=empty;return;}
+    list.forEach((a,index)=>{
+      const clip=document.createElement('button');clip.className='timeline-clip'+(a.type==='text'?' text':'')+(a.type==='audio'?' audio':'')+(selected===a.id?' sel':'');
+      const title=document.createElement('span');title.textContent=a.name;const time=document.createElement('span');time.className='clip-duration';time.textContent=durationOf(a).toFixed(1)+' sec';
+      clip.append(title,time);clip.style.width=Math.max(86,Math.min(280,durationOf(a)*24))+'px';clip.draggable=true;clip.dataset.assetId=a.id;clip.onclick=()=>select(a.id);
+      clip.ondragstart=e=>{e.dataTransfer.setData('text/plain',a.id);e.dataTransfer.effectAllowed='move';};
+      clip.ondragover=e=>{e.preventDefault();e.dataTransfer.dropEffect='move';};
+      clip.ondrop=e=>{e.preventDefault();const movingId=e.dataTransfer.getData('text/plain');if(!movingId||movingId===a.id)return;pushHistory();const movingIndex=assets.findIndex(x=>x.id===movingId),targetIndex=assets.findIndex(x=>x.id===a.id);if(movingIndex<0||targetIndex<0)return;const moving=assets.splice(movingIndex,1)[0];const adjustedTarget=assets.findIndex(x=>x.id===a.id);assets.splice(adjustedTarget,0,moving);render();select(moving.id);markUnsaved();};
+      lane.append(clip);
+    });
+  });
+  const chosen=get(selected);$('split').disabled=!(chosen&&chosen.type==='video');
+}
+function renderStage(){
+  const stage=$('stage');stage.replaceChildren();player=null;
+  const chosen=get(selected);
+  const base=chosen&&chosen.type==='video'?chosen:chosen&&chosen.type==='image'&&chosen.track==='video'?chosen:assets.find(a=>a.type==='video'||(a.type==='image'&&a.track==='video'));
+  if(base){
+    if(base.type==='video'){
+      const video=document.createElement('video');video.src=makeUrl(base);video.playsInline=true;video.preload='metadata';video.controls=false;video.style.filter=base.filter||'none';video.playbackRate=Number(base.speed)||1;
+      video.dataset.assetId=base.id;video.onloadedmetadata=()=>{base.duration=video.duration;const end=Number(base.trimOut)||video.duration;$('seek').max=String(Math.max(.01,end));$('durationLabel').textContent=fmt(end);renderLanes();const start=Math.max(0,Number(base.trimIn)||0);video.currentTime=Math.min(start,video.duration||start);};
+      video.ontimeupdate=()=>{playhead=video.currentTime;$('clock').textContent=fmt(playhead);$('seek').value=String(playhead);const end=Number(base.trimOut)||video.duration;if(end&&video.currentTime>=end){video.pause();video.currentTime=end;}};
+      stage.append(video);player=video;$('monitorName').textContent=base.name;
+    }else{const image=document.createElement('img');image.className='base-image';image.src=makeUrl(base);stage.append(image);$('monitorName').textContent=base.name;}
+  }else $('monitorName').textContent='Text composition';
+  assets.filter(a=>a.type==='text').forEach(a=>{
+    const el=document.createElement('div');el.className='text-layer '+(a.mode==='background'?'background':a.mode==='behind'?'behind':a.mode==='running'?'running':'')+(a.animation&&a.animation!=='none'&&a.animation!=='running'?' anim-'+a.animation:'')+(selected===a.id?' selected':'');
+    el.dataset.id=a.id;el.textContent=a.text;el.style.left=a.mode==='running'?'100%':a.x+'%';el.style.top=a.mode==='running'?'auto':a.y+'%';if(a.mode==='running')el.style.bottom='8%';
+    el.style.color=a.color;el.style.fontSize=a.fontSize+'px';el.style.fontFamily=a.fontFamily||'Arial';el.style.fontWeight=a.bold?'800':'400';el.style.fontStyle=a.italic?'italic':'normal';el.style.textShadow=a.shadow?'0 2px 8px #000':'none';if(a.outline)el.style.webkitTextStroke='1px #111';if(a.mode==='running')el.style.animationDuration=(a.duration||12)+'s';
+    el.addEventListener('pointerdown',e=>{if(a.mode==='running')return;e.preventDefault();el.setPointerCapture(e.pointerId);pushHistory();selected=a.id;drag={id:a.id,startX:e.clientX,startY:e.clientY,x:a.x,y:a.y};renderLanes();inspector(a);el.classList.add('selected');});
+    el.addEventListener('pointermove',e=>{if(!drag||drag.id!==a.id)return;const rect=stage.getBoundingClientRect();a.x=Math.max(2,Math.min(98,drag.x+(e.clientX-drag.startX)/rect.width*100));a.y=Math.max(3,Math.min(97,drag.y+(e.clientY-drag.startY)/rect.height*100));el.style.left=a.x+'%';el.style.top=a.y+'%';updatePositionFields(a);});
+    el.addEventListener('pointerup',()=>{drag=null;markUnsaved();});el.addEventListener('pointercancel',()=>{drag=null;});stage.append(el);
+  });
+  const cutout=assets.find(a=>a.track==='cutout'&&a.type==='image');
+  if(cutout){const image=document.createElement('img');image.className='subject-cutout';image.src=makeUrl(cutout);stage.append(image);}
+  if(!base&&!assets.some(a=>a.type==='text')){const hint=document.createElement('div');hint.className='hint';hint.textContent='Import a video or image, then add text.';stage.append(hint);}
+  $('seek').value=String(playhead||0);
+}
+function field(label,control){
+  const wrap=document.createElement('div');wrap.className='field';const caption=document.createElement('label');caption.textContent=label;wrap.append(caption,control);$('inspector').append(wrap);return control;
+}
+function makeInput(type,value){const el=document.createElement('input');el.type=type;if(type!=='checkbox')el.value=value??'';return el;}
+function updatePositionFields(item){const x=$('posX'),y=$('posY');if(x)x.value=item.x;if(y)y.value=item.y;}
+function select(id){
+  selected=id;const item=get(id);if(!item)return;
+  renderLanes();renderStage();buildInspector(item);
+}
+function buildInspector(item){
+  const box=$('inspector');box.replaceChildren();
+  const name=makeInput('text',item.name);field('Layer name',name);name.onchange=()=>{item.name=name.value;renderLanes();markUnsaved();};
+  if(item.type==='text'){
+    const text=document.createElement('textarea');text.rows=3;text.value=item.text;field('Text content',text);text.oninput=()=>{pushHistory();item.text=text.value;renderStage();markUnsaved();};
+    const mode=document.createElement('select');[['front','Foreground text'],['behind','Behind subject text'],['background','Background text'],['running','Running / scrolling text'],['still','Still text']].forEach(([value,label])=>{const opt=document.createElement('option');opt.value=value;opt.textContent=label;mode.append(opt);});mode.value=item.mode||'front';field('Text layer type',mode);
+    mode.onchange=()=>{pushHistory();item.mode=mode.value;item.track='text';render();buildInspector(item);markUnsaved();};
+    const color=makeInput('color',item.color);field('Text colour',color);color.oninput=()=>{pushHistory();item.color=color.value;renderStage();markUnsaved();};
+    const size=makeInput('range',item.fontSize);size.min=12;size.max=120;field('Text size',size);size.oninput=()=>{pushHistory();item.fontSize=Number(size.value);renderStage();markUnsaved();};
+    const font=document.createElement('select');['Arial','Georgia','Verdana','Impact','Courier New','Trebuchet MS'].forEach(value=>{const opt=document.createElement('option');opt.value=value;opt.textContent=value;font.append(opt);});font.value=item.fontFamily||'Arial';field('Font family',font);font.onchange=()=>{pushHistory();item.fontFamily=font.value;renderStage();markUnsaved();};
+    const animation=document.createElement('select');[['none','No animation'],['fade','Fade in'],['slide','Slide in'],['zoom','Zoom in'],['type','Typewriter reveal'],['bounce','Bounce']].forEach(([value,label])=>{const opt=document.createElement('option');opt.value=value;opt.textContent=label;animation.append(opt);});animation.value=item.animation||'none';field('Text entrance animation',animation);animation.onchange=()=>{pushHistory();item.animation=animation.value;renderStage();markUnsaved();};
+
+    [['Bold','bold'],['Italic','italic'],['Text shadow','shadow'],['Text outline','outline']].forEach(([label,key])=>{const control=makeInput('checkbox','');control.checked=!!item[key];field(label,control);control.onchange=()=>{pushHistory();item[key]=control.checked;renderStage();markUnsaved();};});
+    const x=makeInput('range',item.x);x.min=0;x.max=100;x.id='posX';field('Horizontal position',x);x.oninput=()=>{pushHistory();item.x=Number(x.value);renderStage();markUnsaved();};
+    const y=makeInput('range',item.y);y.min=0;y.max=100;y.id='posY';field('Vertical position',y);y.oninput=()=>{pushHistory();item.y=Number(y.value);renderStage();markUnsaved();};
+    const duration=makeInput('number',item.duration||5);duration.min=1;duration.max=120;field('Duration (seconds)',duration);duration.onchange=()=>{pushHistory();item.duration=Math.max(1,Number(duration.value)||5);renderStage();markUnsaved();};
+    if(item.mode==='behind'){const note=document.createElement('div');note.className='hint';note.textContent='Behind-subject text requires an isolated transparent PNG. The PNG is layered above this text; automatic AI masking is not included.';box.append(note);}
+  }else if(item.type==='image'){
+    const button=document.createElement('button');button.textContent='Use selected image as subject cutout';button.onclick=()=>{pushHistory();item.track='cutout';render();select(item.id);markUnsaved();};box.append(button);
+    const note=document.createElement('div');note.className='hint';note.textContent='Use a transparent PNG with the subject isolated to create the foreground mask.';box.append(note);
+  }else if(item.type==='video'){
+    const trimIn=makeInput('number',item.trimIn||0);trimIn.min=0;trimIn.step='.1';field('Trim in (seconds)',trimIn);trimIn.onchange=()=>{pushHistory();item.trimIn=Math.max(0,Number(trimIn.value)||0);if(player)player.currentTime=item.trimIn;markUnsaved();};
+    const trimOut=makeInput('number',item.trimOut||0);trimOut.min=0;trimOut.step='.1';field('Trim out (seconds; 0 = end)',trimOut);trimOut.onchange=()=>{pushHistory();item.trimOut=Math.max(0,Number(trimOut.value)||0);markUnsaved();};
+    const speed=document.createElement('select');[['0.25','0.25×'],['0.5','0.5×'],['0.75','0.75×'],['1','1× Normal'],['1.25','1.25×'],['1.5','1.5×'],['2','2×'],['3','3×']].forEach(([v,label])=>{const opt=document.createElement('option');opt.value=v;opt.textContent=label;speed.append(opt);});speed.value=String(item.speed||1);field('Playback speed',speed);speed.onchange=()=>{pushHistory();item.speed=Number(speed.value);if(player)player.playbackRate=item.speed;markUnsaved();};
+    const filter=document.createElement('select');[['none','Original'],['grayscale(1)','Black & white'],['sepia(1)','Sepia'],['contrast(1.25) saturate(1.2)','Punchy'],['brightness(1.15) saturate(1.25)','Bright colour'],['blur(1px)','Soft blur']].forEach(([v,label])=>{const opt=document.createElement('option');opt.value=v;opt.textContent=label;filter.append(opt);});filter.value=item.filter||'none';field('Preview filter',filter);filter.onchange=()=>{pushHistory();item.filter=filter.value;if(player)player.style.filter=item.filter;renderStage();markUnsaved();};
+
+  }else if(item.type==='audio'){
+    const volume=makeInput('range',item.volume??1);volume.min=0;volume.max=1;volume.step='.05';field('Volume',volume);volume.oninput=()=>{pushHistory();item.volume=Number(volume.value);markUnsaved();};
+    const audio=document.createElement('audio');audio.controls=true;audio.preload='metadata';audio.src=makeUrl(item);audio.className='audio-preview';audio.volume=Number(item.volume??1);box.append(audio);
+    const info=document.createElement('div');info.className='hint';info.textContent='Audio preview is available. Full multi-track mixing and synchronized export are not yet implemented.';box.append(info);
+
+  }
+  const save=document.createElement('button');save.className='primary';save.textContent='Apply & save project';save.onclick=async()=>{try{await saveDB();$('saveStatus').textContent='SAVED ON THIS DEVICE';}catch(error){alert('Save failed: '+error.message);}};box.append(save);
+}
+
+
+function drawCover(ctx,video,width,height){
+  const vw=video.videoWidth||width,vh=video.videoHeight||height;
+  const scale=Math.min(width/vw,height/vh),w=vw*scale,h=vh*scale;
+  ctx.fillStyle='#000';ctx.fillRect(0,0,width,height);
+  ctx.drawImage(video,(width-w)/2,(height-h)/2,w,h);
+}
+function drawTextForExport(ctx,width,height,item){
+  const fontSize=Math.max(12,Number(item.fontSize)||42)*Math.min(width/850, height/478);
+  ctx.save();ctx.font=(item.italic?'italic ':'')+(item.bold?'800 ':'400 ')+fontSize+'px '+(item.fontFamily||'Arial');
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  const lines=String(item.text||'').split('\n');const lineHeight=fontSize*1.2;
+  const x=width*(Number(item.x??50)/100),y=height*(Number(item.y??50)/100);
+  const total=lines.length*lineHeight;let yy=y-total/2+lineHeight/2;
+  lines.forEach(line=>{
+    if(item.shadow){ctx.shadowColor='rgba(0,0,0,.85)';ctx.shadowBlur=8;ctx.shadowOffsetY=2;}
+    if(item.outline){ctx.lineWidth=Math.max(2,fontSize*.06);ctx.strokeStyle='#111';ctx.strokeText(line,x,yy);}
+    ctx.fillStyle=item.color||'#fff';ctx.fillText(line,x,yy);yy+=lineHeight;
+  });
+  ctx.restore();
+}
+async function exportCurrentVideo(){
+  const video=player;
+  const selectedAsset=get(selected);
+  const source=selectedAsset&&selectedAsset.type==='video'?selectedAsset:activeVideo();
+  if(!source||!video||video.tagName!=='VIDEO'||video.readyState<2){
+    alert('Select a video clip and wait until its preview has loaded before exporting.');return;
+  }
+  if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){
+    alert('This browser does not support browser-based video export. Please try a recent Chrome browser.');return;
+  }
+  const panel=$('exportPanel'),status=$('exportStatus'),progress=$('exportProgress');
+  panel.hidden=false;progress.value=0;status.textContent='Preparing video export…';
+  const wasPlaying=!video.paused;video.pause();
+  const start=Math.max(0,Number(source.trimIn)||0);
+  const end=Number(source.trimOut)>start?Number(source.trimOut):video.duration;
+  if(!Number.isFinite(end)||end-start<.25){alert('The video duration or trim range is invalid.');return;}
+  const width=video.videoWidth||1280,height=video.videoHeight||720;
+  const canvas=document.createElement('canvas');canvas.width=Math.min(1920,width);canvas.height=Math.round(canvas.width*height/width);
+  const ctx=canvas.getContext('2d');
+  const canvasStream=canvas.captureStream(30);
+  const stream=new MediaStream([...canvasStream.getVideoTracks()]);
+  let audioStream=null;
+  try{if(video.captureStream){audioStream=video.captureStream();audioStream.getAudioTracks().forEach(t=>stream.addTrack(t));}}catch(error){console.warn('Audio capture unavailable',error);}
+  const mimeTypes=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+  const mimeType=mimeTypes.find(type=>MediaRecorder.isTypeSupported(type))||'';
+  let recorder;
+  try{recorder=new MediaRecorder(stream,mimeType?{mimeType}:undefined);}catch(error){alert('Could not start the video encoder: '+error.message);return;}
+  const chunks=[];
+  recorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
+  const stopped=new Promise((resolve,reject)=>{recorder.onstop=resolve;recorder.onerror=e=>reject(e.error||new Error('Export failed'));});
+  const textLayers=assets.filter(a=>a.type==='text');
+  let raf=0,failed=null;
+  function drawFrame(){
+    try{
+      drawCover(ctx,video,canvas.width,canvas.height);
+      textLayers.forEach(item=>drawTextForExport(ctx,canvas.width,canvas.height,item));
+      const fraction=Math.max(0,Math.min(1,(video.currentTime-start)/(end-start)));
+      progress.value=fraction*100;status.textContent='Rendering '+Math.round(fraction*100)+'% · '+fmt(video.currentTime-start)+' / '+fmt(end-start);
+      if(video.currentTime>=end-.025){video.pause();return;}
+      raf=requestAnimationFrame(drawFrame);
+    }catch(error){failed=error;video.pause();}
+  }
+  try{
+    video.currentTime=start;
+    await new Promise(resolve=>{if(Math.abs(video.currentTime-start)<.03)resolve();else video.addEventListener('seeked',resolve,{once:true});});
+    recorder.start(250);await video.play();drawFrame();
+    await new Promise(resolve=>{const poll=()=>{if(video.paused||video.ended||failed){resolve();return;}setTimeout(poll,100);};poll();});
+    cancelAnimationFrame(raf);
+    if(recorder.state!=='inactive')recorder.stop();
+    await stopped;
+    if(failed)throw failed;
+    const blob=new Blob(chunks,{type:recorder.mimeType||'video/webm'});
+    if(!blob.size)throw new Error('The browser returned an empty video file.');
+    const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='VIDIORA-export.webm';link.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
+    progress.value=100;status.textContent='Export complete · '+(blob.size/1024/1024).toFixed(1)+' MB · WebM';
+  }catch(error){
+    if(recorder&&recorder.state!=='inactive')recorder.stop();
+    status.textContent='Export failed';alert('Video export failed: '+error.message);
+  }finally{
+    if(audioStream)audioStream.getTracks().forEach(t=>t.stop());
+    canvasStream.getTracks().forEach(t=>t.stop());
+    if(wasPlaying)video.play().catch(()=>{});
+  }
+}
+async function blobToDataUrl(blob){return await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(reader.error);reader.readAsDataURL(blob);});}
+async function exportProjectBackup(){
+  try{
+    const project=[];
+    for(const item of assets){
+      const copy={...item};delete copy.url;
+      if(item.blob)copy.mediaData=await blobToDataUrl(item.blob);
+      project.push(copy);
+    }
+    const payload={format:'VIDIORA_PROJECT',version:1,createdAt:new Date().toISOString(),assets:project};
+    const file=new Blob([JSON.stringify(payload)],{type:'application/json'});
+    const url=URL.createObjectURL(file),link=document.createElement('a');link.href=url;link.download='VIDIORA-project-backup.vidiora';link.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
+    $('saveStatus').textContent='BACKUP DOWNLOADED';
+  }catch(error){alert('Backup could not be created. Large media files may exceed available phone memory. '+error.message);}
+}
+async function importProjectBackup(file){
+  try{
+    const payload=JSON.parse(await file.text());
+    if(payload.format!=='VIDIORA_PROJECT'||!Array.isArray(payload.assets))throw new Error('This is not a valid VIDIORA project backup.');
+    const restored=[];
+    for(const item of payload.assets){
+      const copy={...item};delete copy.url;
+      if(copy.mediaData){const response=await fetch(copy.mediaData);copy.blob=await response.blob();delete copy.mediaData;}
+      restored.push(copy);
+    }
+    pushHistory();assets=restored;selected=null;playhead=0;render();$('inspector').innerHTML='<div class="hint">Project restored. Select a clip or text layer.</div>';markUnsaved();
+    $('saveStatus').textContent='BACKUP RESTORED';
+  }catch(error){alert('Could not restore this project: '+error.message);}
+}
+function splitSelectedVideo(){
+  const item=get(selected);if(!item||item.type!=='video'){alert('Select a video clip in the VIDEO track before splitting.');return;}
+  const start=Math.max(0,Number(item.trimIn)||0);
+  const duration=player&&player.dataset.assetId===item.id?player.duration:NaN;
+  const end=Number(item.trimOut)>0?Number(item.trimOut):duration;
+  if(!Number.isFinite(end)||end-start<.4){alert('The selected video duration is not ready. Wait for the preview to load, then try again.');return;}
+  const cut=player&&player.dataset.assetId===item.id&&Number.isFinite(player.currentTime)?player.currentTime:playhead;
+  if(cut<=start+.1||cut>=end-.1){alert('Move the playhead inside the selected clip using the seek bar, then split.');return;}
+  pushHistory();const second={...item,id:uid(),name:(item.name||'Video')+' (Part 2)',trimIn:cut,trimOut:end};
+  item.trimOut=cut;assets.splice(assets.findIndex(a=>a.id===item.id)+1,0,second);selected=second.id;playhead=cut;render();select(second.id);markUnsaved();
+}
+$('undo').onclick=undo;$('redo').onclick=redo;
+$('renderVideo').onclick=exportCurrentVideo;
+$('exportProject').onclick=exportProjectBackup;
+$('importProject').onclick=()=>$('projectFile').click();
+$('projectFile').onchange=e=>{const file=e.target.files&&e.target.files[0];if(file)importProjectBackup(file);e.target.value='';};
+
+document.addEventListener('keydown',e=>{const tag=(e.target&&e.target.tagName||'').toLowerCase();if(tag==='input'||tag==='textarea'||tag==='select'||e.target.isContentEditable)return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();}else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();redo();}});
+$('import').onclick=()=>$('files').click();
+$('files').onchange=e=>{addFiles(e.target.files);e.target.value='';};
+$('addText').onclick=()=>addText('front');
+$('drop').ondragover=e=>e.preventDefault();
+$('drop').ondrop=e=>{e.preventDefault();if(e.dataTransfer&&e.dataTransfer.files)addFiles(e.dataTransfer.files);};
+$('split').onclick=splitSelectedVideo;
+$('delete').onclick=()=>{if(!selected)return;pushHistory();const index=assets.findIndex(a=>a.id===selected);if(index>=0)assets.splice(index,1);selected=null;render();$('inspector').innerHTML='<div class="hint">Select a text layer or media clip.</div>';markUnsaved();};
+$('ratio').onchange=()=>$('stage').style.aspectRatio=$('ratio').value;
+$('play').onclick=()=>{if(player)player.play().catch(()=>{});};
+$('pause').onclick=()=>{if(player)player.pause();};
+$('stop').onclick=()=>{if(player){player.pause();player.currentTime=Number(get(selected)?.trimIn)||0;}};
+$('seek').oninput=()=>{playhead=Number($('seek').value)||0;if(player){player.currentTime=playhead;}$('clock').textContent=fmt(playhead);};
+$('saveProject').onclick=async()=>{try{const ok=await saveDB();if(ok){$('saveStatus').textContent='SAVED ON THIS DEVICE';alert('Project and imported media saved in this browser on this device.');}else alert('Local database is unavailable in this browser.');}catch(error){alert('Could not save the project. Browser storage may be full. '+error.message);}};
+$('newProject').onclick=()=>{if(!confirm('Start a new project? Save your current project first.'))return;pushHistory();assets=[];selected=null;player=null;playhead=0;render();$('split').disabled=true;$('inspector').innerHTML='<div class="hint">Select a text layer or media clip.</div>';markUnsaved();};
+(async()=>{try{db=await openDB();assets=await loadDB();assets.forEach(a=>{a.url=null;if(a.type==='text'&&!a.mode)a.mode='front';});render();updateHistoryButtons();if(assets.length)$('saveStatus').textContent='PROJECT RESTORED';}catch(error){$('saveStatus').textContent='LOCAL MODE';console.error(error);}})();
+})();
+</script>
+</body>
+</html>
